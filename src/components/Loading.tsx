@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
+import { isMobileViewport } from "../utils/device";
 
 import Marquee from "react-fast-marquee";
 
@@ -9,22 +10,25 @@ const Loading = ({ percent }: { percent: number }) => {
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const mobile = isMobileViewport();
 
   useEffect(() => {
-    if (percent >= 100) {
+    const readyThreshold = mobile ? 88 : 100;
+    if (percent >= readyThreshold) {
       setLoaded(true);
       setIsLoaded(true);
     }
-  }, [percent]);
+  }, [percent, mobile]);
 
   useEffect(() => {
+    const fallbackMs = mobile ? 6000 : 15000;
     const fallbackTimer = window.setTimeout(() => {
       setLoaded(true);
       setIsLoaded(true);
-    }, 15000);
+    }, fallbackMs);
 
     return () => window.clearTimeout(fallbackTimer);
-  }, []);
+  }, [mobile]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -104,23 +108,27 @@ export default Loading;
 
 export const setProgress = (setLoading: (value: number) => void) => {
   let percent: number = 0;
+  const mobile = isMobileViewport();
+  const slowIntervalMs = mobile ? 120 : 2000;
+  const fastIntervalMs = mobile ? 40 : 100;
+  const progressCap = mobile ? 88 : 91;
 
   let interval = setInterval(() => {
     if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
+      const rand = Math.round(Math.random() * (mobile ? 8 : 5));
       percent = percent + rand;
-      setLoading(percent);
+      setLoading(Math.min(percent, 50));
     } else {
       clearInterval(interval);
       interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
+        percent = percent + Math.round(Math.random() * (mobile ? 3 : 1));
         setLoading(percent);
-        if (percent > 91) {
+        if (percent > progressCap) {
           clearInterval(interval);
         }
-      }, 2000);
+      }, slowIntervalMs);
     }
-  }, 100);
+  }, fastIntervalMs);
 
   function clear() {
     clearInterval(interval);
@@ -128,6 +136,12 @@ export const setProgress = (setLoading: (value: number) => void) => {
   }
 
   function loaded() {
+    if (mobile) {
+      clearInterval(interval);
+      setLoading(100);
+      return Promise.resolve(100);
+    }
+
     return new Promise<number>((resolve) => {
       clearInterval(interval);
       interval = setInterval(() => {

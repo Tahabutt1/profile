@@ -12,6 +12,7 @@ import {
 } from "./utils/mouseUtils";
 import setAnimations from "./utils/animationUtils";
 import { setProgress } from "../Loading";
+import { isMobileViewport } from "../../utils/device";
 
 const Scene = () => {
   const canvasDiv = useRef<HTMLDivElement | null>(null);
@@ -27,12 +28,19 @@ const Scene = () => {
       const aspect = container.width / container.height;
       const scene = sceneRef.current;
 
+      const mobile = isMobileViewport();
+
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: true,
+        antialias: !mobile,
+        powerPreference: mobile ? "low-power" : "high-performance",
       });
       renderer.setSize(container.width, container.height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(
+        mobile
+          ? Math.min(window.devicePixelRatio, 1.5)
+          : Math.min(window.devicePixelRatio, 2)
+      );
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
       canvasDiv.current.appendChild(renderer.domElement);
@@ -62,12 +70,20 @@ const Scene = () => {
             let character = gltf.scene;
             setChar(character);
             scene.add(character);
+            canvasDiv.current?.classList.add("character-loaded");
             headBone = character.getObjectByName("spine006") || null;
             screenLight = character.getObjectByName("screenlight") || null;
-            progress.loaded().then(() => {
+
+            if (mobile) {
+              progress.clear();
               light.turnOnLights();
               animations.startIntro();
-            });
+            } else {
+              progress.loaded().then(() => {
+                light.turnOnLights();
+                animations.startIntro();
+              });
+            }
             window.addEventListener("resize", () =>
               handleResize(renderer, camera, canvasDiv, character)
             );

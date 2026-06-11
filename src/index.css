@@ -128,6 +128,9 @@ body {
     margin-top: 40px;
     margin-bottom: 0;
   }
+  .techstack-placeholder {
+    pointer-events: none;
+  }
   .techstack h2 {
     font-size: 36px;
     top: 60px;
@@ -135,6 +138,13 @@ body {
   .tech-canvas {
     width: 100% !important;
     height: 100% !important;
+  }
+  .character-model {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .character-model.character-loaded {
+    opacity: 1;
   }
 }
 @media screen and (max-width: 480px) {

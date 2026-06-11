@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { DRACOLoader, GLTF, GLTFLoader } from "three-stdlib";
 import { setCharTimeline, setAllTimeline } from "../../utils/GsapScroll";
 import { decryptFile } from "./decrypt";
+import { isMobileViewport } from "../../../utils/device";
 
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
@@ -27,14 +28,20 @@ const setCharacter = (
           blobUrl,
           async (gltf) => {
             character = gltf.scene;
-            await renderer.compileAsync(character, camera, scene);
-            character.traverse((child: any) => {
-              if (child.isMesh) {
-                const mesh = child as THREE.Mesh;
-                child.castShadow = true;
-                child.receiveShadow = true;
-                mesh.frustumCulled = true;
+            const mobile = isMobileViewport();
+
+            if (!mobile) {
+              await renderer.compileAsync(character, camera, scene);
+            }
+
+            character.traverse((child) => {
+              const mesh = child as THREE.Mesh;
+              if (!mesh.isMesh) return;
+              if (!mobile) {
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
               }
+              mesh.frustumCulled = true;
             });
             resolve(gltf);
             try {

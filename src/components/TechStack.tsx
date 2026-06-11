@@ -10,6 +10,7 @@ import {
   CylinderCollider,
   RapierRigidBody,
 } from "@react-three/rapier";
+import { isMobileViewport } from "../utils/device";
 
 const textureLoader = new THREE.TextureLoader();
 const imageUrls = [
@@ -25,11 +26,10 @@ const imageUrls = [
 ];
 const textures = imageUrls.map((url) => textureLoader.load(url));
 
-const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
-
-const spheres = [...Array(30)].map(() => ({
-  scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
-}));
+const createSpheres = (count: number) =>
+  [...Array(count)].map(() => ({
+    scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
+  }));
 
 type SphereProps = {
   vec?: THREE.Vector3;
@@ -37,6 +37,7 @@ type SphereProps = {
   r?: typeof THREE.MathUtils.randFloatSpread;
   material: THREE.MeshPhysicalMaterial;
   isActive: boolean;
+  geometry: THREE.SphereGeometry;
 };
 
 function SphereGeo({
@@ -45,6 +46,7 @@ function SphereGeo({
   r = THREE.MathUtils.randFloatSpread,
   material,
   isActive,
+  geometry,
 }: SphereProps) {
   const api = useRef<RapierRigidBody | null>(null);
 
@@ -84,7 +86,7 @@ function SphereGeo({
         castShadow
         receiveShadow
         scale={scale}
-        geometry={sphereGeometry}
+        geometry={geometry}
         material={material}
         rotation={[0.3, 1, 1]}
       />
@@ -127,6 +129,12 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
+  const mobile = isMobileViewport();
+  const spheres = useMemo(() => createSpheres(mobile ? 12 : 30), [mobile]);
+  const sphereGeo = useMemo(
+    () => new THREE.SphereGeometry(1, mobile ? 16 : 28, mobile ? 16 : 28),
+    [mobile]
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -173,21 +181,24 @@ const TechStack = () => {
       <h2> My Techstack</h2>
 
       <Canvas
-        shadows
+        shadows={!mobile}
+        dpr={mobile ? 1 : undefined}
         gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
       >
         <ambientLight intensity={1} />
-        <spotLight
-          position={[20, 20, 25]}
-          penumbra={1}
-          angle={0.2}
-          color="white"
-          castShadow
-          shadow-mapSize={[512, 512]}
-        />
+        {!mobile && (
+          <spotLight
+            position={[20, 20, 25]}
+            penumbra={1}
+            angle={0.2}
+            color="white"
+            castShadow
+            shadow-mapSize={[512, 512]}
+          />
+        )}
         <directionalLight position={[0, 5, -4]} intensity={2} />
         <Physics gravity={[0, 0, 0]}>
           <Pointer isActive={isActive} />
@@ -195,6 +206,7 @@ const TechStack = () => {
             <SphereGeo
               key={i}
               {...props}
+              geometry={sphereGeo}
               material={materials[Math.floor(Math.random() * materials.length)]}
               isActive={isActive}
             />
@@ -205,9 +217,11 @@ const TechStack = () => {
           environmentIntensity={0.5}
           environmentRotation={[0, 4, 2]}
         />
-        <EffectComposer enableNormalPass={false}>
-          <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
-        </EffectComposer>
+        {!mobile && (
+          <EffectComposer enableNormalPass={false}>
+            <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
+          </EffectComposer>
+        )}
       </Canvas>
     </div>
   );
