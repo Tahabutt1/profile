@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, Suspense, useEffect } from "react";
+import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -13,9 +13,14 @@ import setSplitText from "./utils/splitText";
 const TechStack = lazy(() => import("./TechStack"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
+  const [isDesktopView, setIsDesktopView] = useState(
+    () => window.innerWidth > 1024
+  );
+
   useEffect(() => {
     const resizeHandler = () => {
       setSplitText();
+      setIsDesktopView(window.innerWidth > 1024);
     };
     resizeHandler();
     window.addEventListener("resize", resizeHandler);
@@ -29,16 +34,16 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       <Cursor />
       <Navbar />
       <SocialIcons />
-      {children}
+      {isDesktopView ? children : null}
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <div className="container-main">
-            <Landing />
+            <Landing>{!isDesktopView ? children : null}</Landing>
             <About />
             <WhatIDo />
             <Career />
             <Work />
-            <Suspense fallback={<div>Loading....</div>}>
+            <Suspense fallback={null}>
               <TechStack />
             </Suspense>
             <Contact />

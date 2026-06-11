@@ -18,6 +18,15 @@ const Loading = ({ percent }: { percent: number }) => {
   }, [percent]);
 
   useEffect(() => {
+    const fallbackTimer = window.setTimeout(() => {
+      setLoaded(true);
+      setIsLoaded(true);
+    }, 15000);
+
+    return () => window.clearTimeout(fallbackTimer);
+  }, []);
+
+  useEffect(() => {
     if (!isLoaded) return;
     setClicked(true);
     import("./utils/initialFX").then((module) => {

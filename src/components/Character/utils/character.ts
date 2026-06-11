@@ -37,8 +37,12 @@ const setCharacter = (
               }
             });
             resolve(gltf);
-            setCharTimeline(character, camera);
-            setAllTimeline();
+            try {
+              setCharTimeline(character, camera);
+              setAllTimeline();
+            } catch (error) {
+              console.error("Scroll animation setup failed:", error);
+            }
             character!.getObjectByName("footR")!.position.y = 3.36;
             character!.getObjectByName("footL")!.position.y = 3.36;
             dracoLoader.dispose();

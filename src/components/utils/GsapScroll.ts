@@ -1,18 +1,33 @@
 import * as THREE from "three";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+function killCharScrollTriggers() {
+  ScrollTrigger.getAll().forEach((trigger) => {
+    const triggerElement = trigger.vars.trigger;
+    if (
+      typeof triggerElement === "string" &&
+      [".landing-section", ".about-section", ".whatIDO", ".career-section"].some(
+        (selector) => triggerElement === selector
+      )
+    ) {
+      trigger.kill();
+    }
+  });
+}
 
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
 ) {
-  const isMobile = window.innerWidth <= 1024;
-  const charMoveX1 = isMobile ? "-18%" : "-25%";
-  const charMoveX2 = isMobile ? "-8%" : "-12%";
+  killCharScrollTriggers();
 
+  const isMobile = window.innerWidth <= 1024;
   let intensity: number = 0;
   setInterval(() => {
     intensity = Math.random();
   }, 200);
+
   const tl1 = gsap.timeline({
     scrollTrigger: {
       trigger: ".landing-section",
@@ -40,23 +55,31 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  let screenLight: any, monitor: any;
-  character?.children.forEach((object: any) => {
+
+  let screenLight: THREE.Object3D | null = null;
+  let monitor: THREE.Object3D<THREE.Object3DEventMap> | null = null;
+
+  character?.children.forEach((object: THREE.Object3D) => {
     if (object.name === "Plane004") {
-      object.children.forEach((child: any) => {
-        child.material.transparent = true;
-        child.material.opacity = 0;
-        if (child.material.name === "Material.027") {
+      object.children.forEach((child: THREE.Object3D) => {
+        const mesh = child as THREE.Mesh;
+        if (!mesh.material) return;
+        const material = mesh.material as THREE.MeshStandardMaterial;
+        material.transparent = true;
+        material.opacity = 0;
+        if (material.name === "Material.027") {
           monitor = child;
-          child.material.color.set("#FFFFFF");
+          material.color.set("#FFFFFF");
         }
       });
     }
     if (object.name === "screenlight") {
-      object.material.transparent = true;
-      object.material.opacity = 0;
-      object.material.emissive.set("#C8BFFF");
-      gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
+      const mesh = object as THREE.Mesh;
+      const material = mesh.material as THREE.MeshStandardMaterial;
+      material.transparent = true;
+      material.opacity = 0;
+      material.emissive.set("#C8BFFF");
+      gsap.timeline({ repeat: -1, repeatRefresh: true }).to(material, {
         emissiveIntensity: () => intensity * 8,
         duration: () => Math.random() * 0.6,
         delay: () => Math.random() * 0.1,
@@ -64,22 +87,26 @@ export function setCharTimeline(
       screenLight = object;
     }
   });
-  let neckBone = character?.getObjectByName("spine005");
+
+  const neckBone = character?.getObjectByName("spine005") ?? null;
+  const monitorMaterial =
+    monitor && (monitor as THREE.Mesh).material
+      ? ((monitor as THREE.Mesh).material as THREE.MeshStandardMaterial)
+      : null;
+  const screenLightMaterial =
+    screenLight && (screenLight as THREE.Mesh).material
+      ? ((screenLight as THREE.Mesh).material as THREE.MeshStandardMaterial)
+      : null;
+
+  if (!character) return;
 
   if (isMobile) {
     gsap.set(".what-box-in", { display: "flex" });
-  }
 
-  if (character) {
     tl1
       .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
-      .to(camera.position, { z: isMobile ? 24 : 22 }, 0)
-      .fromTo(
-        ".character-model",
-        { x: 0 },
-        { x: charMoveX1, duration: 1 },
-        0
-      )
+      .to(camera.position, { z: 24 }, 0)
+      .fromTo(".character-model", { x: 0 }, { x: "-18%", duration: 1 }, 0)
       .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
       .to(".landing-container", { y: "40%", duration: 0.8 }, 0)
       .fromTo(".about-me", { y: "-50%" }, { y: "0%" }, 0);
@@ -87,50 +114,52 @@ export function setCharTimeline(
     tl2
       .to(
         camera.position,
-        {
-          z: isMobile ? 68 : 75,
-          y: isMobile ? 7.2 : 8.4,
-          duration: 6,
-          delay: 2,
-          ease: "power3.inOut",
-        },
+        { z: 68, y: 7.2, duration: 6, delay: 2, ease: "power3.inOut" },
         0
       )
-      .to(".about-section", { y: isMobile ? "20%" : "30%", duration: 6 }, 0)
+      .to(".about-section", { y: "20%", duration: 6 }, 0)
       .to(".about-section", { opacity: 0, delay: 3, duration: 2 }, 0)
       .fromTo(
         ".character-model",
         { pointerEvents: "inherit" },
-        {
-          pointerEvents: "none",
-          x: charMoveX2,
-          delay: 2,
-          duration: 5,
-        },
+        { pointerEvents: "none", x: "-8%", delay: 2, duration: 5 },
         0
       )
-      .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
-      .to(neckBone!.rotation, { x: 0.6, delay: 2, duration: 3 }, 0)
-      .to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
-      .to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
-      .fromTo(
-        ".what-box-in",
-        { display: "none" },
-        { display: "flex", duration: 0.1, delay: isMobile ? 0 : 6 },
-        0
-      )
-      .fromTo(
-        monitor.position,
+      .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0);
+
+    if (neckBone) {
+      tl2.to(neckBone.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
+    }
+    if (monitorMaterial) {
+      tl2.to(monitorMaterial, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+    }
+    if (screenLightMaterial) {
+      tl2.to(screenLightMaterial, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+    }
+
+    tl2.fromTo(
+      ".what-box-in",
+      { display: "none" },
+      { display: "flex", duration: 0.1, delay: 0 },
+      0
+    );
+
+    if (monitorMaterial && monitor) {
+      const monitorPosition = (monitor as THREE.Object3D).position;
+      tl2.fromTo(
+        monitorPosition,
         { y: -10, z: 2 },
         { y: 0, z: 0, delay: 1.5, duration: 3 },
         0
-      )
-      .fromTo(
-        ".character-rim",
-        { opacity: 1, scaleX: 1.4 },
-        { opacity: 0, scale: 0, y: "-70%", duration: 5, delay: 2 },
-        0.3
       );
+    }
+
+    tl2.fromTo(
+      ".character-rim",
+      { opacity: 1, scaleX: 1.4 },
+      { opacity: 0, scale: 0, y: "-70%", duration: 5, delay: 2 },
+      0.3
+    );
 
     tl3
       .fromTo(
@@ -139,13 +168,89 @@ export function setCharTimeline(
         { y: "-100%", duration: 4, ease: "none", delay: 1 },
         0
       )
-      .fromTo(".whatIDO", { y: 0 }, { y: isMobile ? "8%" : "15%", duration: 2 }, 0)
+      .fromTo(".whatIDO", { y: 0 }, { y: "8%", duration: 2 }, 0)
       .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+
+    return;
   }
+
+  tl1
+    .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
+    .to(camera.position, { z: 22 }, 0)
+    .fromTo(".character-model", { x: 0 }, { x: "-25%", duration: 1 }, 0)
+    .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
+    .to(".landing-container", { y: "40%", duration: 0.8 }, 0)
+    .fromTo(".about-me", { y: "-50%" }, { y: "0%" }, 0);
+
+  tl2
+    .to(
+      camera.position,
+      { z: 75, y: 8.4, duration: 6, delay: 2, ease: "power3.inOut" },
+      0
+    )
+    .to(".about-section", { y: "30%", duration: 6 }, 0)
+    .to(".about-section", { opacity: 0, delay: 3, duration: 2 }, 0)
+    .fromTo(
+      ".character-model",
+      { pointerEvents: "inherit" },
+      { pointerEvents: "none", x: "-12%", delay: 2, duration: 5 },
+      0
+    )
+    .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0);
+
+  if (neckBone) {
+    tl2.to(neckBone.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
+  }
+  if (monitorMaterial) {
+    tl2.to(monitorMaterial, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+  }
+  if (screenLightMaterial) {
+    tl2.to(screenLightMaterial, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+  }
+
+  tl2
+    .fromTo(
+      ".what-box-in",
+      { display: "none" },
+      { display: "flex", duration: 0.1, delay: 6 },
+      0
+    );
+
+  if (monitorMaterial && monitor) {
+    const monitorPosition = (monitor as THREE.Object3D).position;
+    tl2.fromTo(
+      monitorPosition,
+      { y: -10, z: 2 },
+      { y: 0, z: 0, delay: 1.5, duration: 3 },
+      0
+    );
+  }
+
+  tl2.fromTo(
+    ".character-rim",
+    { opacity: 1, scaleX: 1.4 },
+    { opacity: 0, scale: 0, y: "-70%", duration: 5, delay: 2 },
+    0.3
+  );
+
+  tl3
+    .fromTo(
+      ".character-model",
+      { y: "0%" },
+      { y: "-100%", duration: 4, ease: "none", delay: 1 },
+      0
+    )
+    .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
+    .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
 }
 
 export function setAllTimeline() {
-  const isMobile = window.innerWidth <= 1024;
+  ScrollTrigger.getAll().forEach((trigger) => {
+    if (trigger.vars.trigger === ".career-section") {
+      trigger.kill();
+    }
+  });
+
   const careerTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".career-section",
@@ -155,6 +260,7 @@ export function setAllTimeline() {
       invalidateOnRefresh: true,
     },
   });
+
   careerTimeline
     .fromTo(
       ".career-timeline",
@@ -162,7 +268,6 @@ export function setAllTimeline() {
       { maxHeight: "100%", duration: 0.5 },
       0
     )
-
     .fromTo(
       ".career-timeline",
       { opacity: 0 },
@@ -186,10 +291,19 @@ export function setAllTimeline() {
       0
     );
 
-  careerTimeline.fromTo(
-    ".career-section",
-    { y: 0 },
-    { y: isMobile ? "10%" : "20%", duration: 0.5, delay: 0.2 },
-    0
-  );
+  if (window.innerWidth > 1024) {
+    careerTimeline.fromTo(
+      ".career-section",
+      { y: 0 },
+      { y: "20%", duration: 0.5, delay: 0.2 },
+      0
+    );
+  } else {
+    careerTimeline.fromTo(
+      ".career-section",
+      { y: 0 },
+      { y: "10%", duration: 0.5, delay: 0.2 },
+      0
+    );
+  }
 }

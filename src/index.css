@@ -46,7 +46,7 @@ main {
   transition: 0.3s;
 }
 .main-active {
-  opacity: 0;
+  opacity: 1;
   animation: fadeIn 1s 1;
   animation-fill-mode: forwards;
 }
