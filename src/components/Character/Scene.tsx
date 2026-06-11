@@ -99,11 +99,8 @@ const Scene = () => {
       document.addEventListener("mousemove", (event) => {
         onMouseMove(event);
       });
-      const landingDiv = document.getElementById("landingDiv");
-      if (landingDiv) {
-        landingDiv.addEventListener("touchstart", onTouchStart);
-        landingDiv.addEventListener("touchend", onTouchEnd);
-      }
+      document.addEventListener("touchstart", onTouchStart, { passive: true });
+      document.addEventListener("touchend", onTouchEnd, { passive: true });
       const animate = () => {
         requestAnimationFrame(animate);
         if (headBone) {
@@ -134,11 +131,9 @@ const Scene = () => {
         if (canvasDiv.current) {
           canvasDiv.current.removeChild(renderer.domElement);
         }
-        if (landingDiv) {
-          document.removeEventListener("mousemove", onMouseMove);
-          landingDiv.removeEventListener("touchstart", onTouchStart);
-          landingDiv.removeEventListener("touchend", onTouchEnd);
-        }
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("touchstart", onTouchStart);
+        document.removeEventListener("touchend", onTouchEnd);
       };
     }
   }, []);

@@ -121,3 +121,29 @@ body {
     font-size: 40px;
   }
 }
+@media screen and (max-width: 1024px) {
+  .techstack {
+    height: 75vh;
+    min-height: 480px;
+    margin-top: 40px;
+    margin-bottom: 0;
+  }
+  .techstack h2 {
+    font-size: 36px;
+    top: 60px;
+  }
+  .tech-canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+@media screen and (max-width: 480px) {
+  .techstack {
+    height: 65vh;
+    min-height: 400px;
+  }
+  .techstack h2 {
+    font-size: 28px;
+    top: 40px;
+  }
+}

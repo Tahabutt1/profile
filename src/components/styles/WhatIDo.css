@@ -402,6 +402,55 @@
     font-size: 22px;
   }
 }
+@media only screen and (max-width: 1024px) {
+  .what-box-in {
+    display: flex !important;
+    flex-direction: column;
+    height: auto;
+    margin-left: 0;
+    gap: 24px;
+  }
+  .what-box:last-child {
+    height: auto;
+    min-height: auto;
+  }
+  .what-content {
+    width: 100%;
+    height: auto;
+    min-height: auto !important;
+    padding: 24px 20px !important;
+  }
+  .what-content-in {
+    height: auto;
+    overflow: visible;
+    opacity: 1;
+    animation: none;
+  }
+  .what-content-flex {
+    opacity: 1 !important;
+  }
+  .what-arrow {
+    display: none;
+  }
+  .what-content.what-sibling,
+  .what-noTouch:hover ~ .what-content,
+  .what-box-in:hover .what-noTouch:not(:hover) {
+    min-height: auto !important;
+    padding: 24px 20px !important;
+  }
+  .what-noTouch:hover,
+  .what-content-active {
+    min-height: auto !important;
+    padding: 24px 20px !important;
+  }
+  .what-border2 svg {
+    height: 100%;
+    min-height: 100%;
+  }
+  .what-border2 {
+    max-height: 100%;
+  }
+}
 @media only screen and (min-width: 1950px) {
   .what-box h2 {
     font-size: 7rem;

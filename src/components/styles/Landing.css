@@ -356,12 +356,48 @@ h2.landing-info-h2 {
     font-size: 75px;
   }
 }
+@media screen and (max-width: 1024px) {
+  .character-model {
+    position: fixed;
+    height: 58vh;
+    max-height: 520px;
+    bottom: 0;
+    z-index: 11;
+    width: 100%;
+    left: 50%;
+    pointer-events: inherit;
+  }
+  .character-model::after,
+  .character-model::before {
+    display: none;
+  }
+  .character-hover {
+    width: 200px;
+    height: 200px;
+  }
+  .character-rim {
+    width: 280px;
+    height: 280px;
+  }
+}
 @media screen and (max-width: 767px) {
   .landing-intro {
     top: 10%;
   }
   .landing-info {
     bottom: 28px;
+  }
+  .character-model {
+    height: 50vh;
+    max-height: 420px;
+  }
+  .character-hover {
+    width: 160px;
+    height: 160px;
+  }
+  .character-rim {
+    width: 220px;
+    height: 220px;
   }
   .landing-intro h1 {
     font-size: 26px;
@@ -374,14 +410,6 @@ h2.landing-info-h2 {
   h2.landing-info-h2 {
     font-size: 30px;
     width: 100%;
-  }
-  .character-model {
-    height: 52vh;
-    bottom: 24px;
-  }
-  .character-rim {
-    width: 260px;
-    height: 260px;
   }
   .landing-circle1 {
     width: 200px;
@@ -411,6 +439,7 @@ h2.landing-info-h2 {
     font-size: 26px;
   }
   .character-model {
-    height: 48vh;
+    height: 46vh;
+    max-height: 360px;
   }
 }

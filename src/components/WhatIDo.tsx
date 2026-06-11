@@ -8,21 +8,25 @@ const WhatIDo = () => {
     containerRef.current[index] = el;
   };
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
+    const isMobileLayout = window.matchMedia("(max-width: 1024px)").matches;
+    if (ScrollTrigger.isTouch && !isMobileLayout) {
+      const handlers = new Map<HTMLDivElement, () => void>();
+
       containerRef.current.forEach((container) => {
         if (container) {
           container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
+          const onClick = () => handleClick(container);
+          handlers.set(container, onClick);
+          container.addEventListener("click", onClick);
         }
       });
+
+      return () => {
+        handlers.forEach((onClick, container) => {
+          container.removeEventListener("click", onClick);
+        });
+      };
     }
-    return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
-    };
   }, []);
   return (
     <div className="whatIDO">
