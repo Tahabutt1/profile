@@ -402,7 +402,7 @@ h2.landing-info-h2 {
   .landing-avatar-spacer {
     display: block;
     width: 100%;
-    height: clamp(210px, 38vh, 290px);
+    height: clamp(300px, 52vh, 440px);
     margin-top: 4px;
     flex-shrink: 0;
     pointer-events: none;
@@ -412,7 +412,7 @@ h2.landing-info-h2 {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-top: 2px;
+    margin-top: 24px;
     pointer-events: auto;
     font-family: "Geist", sans-serif;
     font-weight: 600;
@@ -436,8 +436,8 @@ h2.landing-info-h2 {
   }
   .character-model {
     position: fixed !important;
-    height: clamp(220px, 40vh, 320px) !important;
-    max-height: 320px !important;
+    height: clamp(300px, 55vh, 460px) !important;
+    max-height: 460px !important;
     width: 100%;
     bottom: auto !important;
     top: clamp(118px, 19vh, 148px) !important;
@@ -451,12 +451,12 @@ h2.landing-info-h2 {
     display: none;
   }
   .character-hover {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
   }
   .character-rim {
-    width: 210px;
-    height: 210px;
+    width: 280px;
+    height: 280px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -468,24 +468,25 @@ h2.landing-info-h2 {
     line-height: 26px;
   }
   .landing-avatar-spacer {
-    height: clamp(200px, 36vh, 260px);
+    height: clamp(280px, 50vh, 380px);
     margin-top: 2px;
   }
   .landing-role-below-avatar {
     font-size: clamp(15px, 4.2vw, 20px);
+    margin-top: 20px;
   }
   .character-model {
-    height: clamp(200px, 38vh, 280px) !important;
-    max-height: 280px !important;
+    height: clamp(280px, 52vh, 400px) !important;
+    max-height: 400px !important;
     top: clamp(112px, 18vh, 138px) !important;
   }
   .character-hover {
-    width: 130px;
-    height: 130px;
+    width: 180px;
+    height: 180px;
   }
   .character-rim {
-    width: 185px;
-    height: 185px;
+    width: 250px;
+    height: 250px;
   }
   .landing-circle1 {
     width: 200px;
@@ -505,14 +506,15 @@ h2.landing-info-h2 {
     line-height: 22px;
   }
   .landing-avatar-spacer {
-    height: clamp(185px, 34vh, 230px);
+    height: clamp(260px, 48vh, 330px);
   }
   .landing-role-below-avatar {
     font-size: 14px;
+    margin-top: 18px;
   }
   .character-model {
-    height: clamp(185px, 36vh, 240px) !important;
-    max-height: 240px !important;
+    height: clamp(260px, 50vh, 360px) !important;
+    max-height: 360px !important;
     top: clamp(104px, 17vh, 128px) !important;
   }
 }
