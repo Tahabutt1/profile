@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { smoother } from "../Navbar";
+import { isMobileViewport } from "../../utils/device";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,6 +38,7 @@ function splitText(
 
 export function initialFX() {
   document.body.style.overflowY = "auto";
+  const mobile = isMobileViewport();
 
   // safe smoother fallback (no crash)
   if (smoother?.paused) smoother.paused(false);
@@ -50,9 +52,6 @@ export function initialFX() {
     delay: 1,
   });
 
-  // =========================
-  // FIRST TEXT ANIMATION
-  // =========================
   const landingText = splitText(
     ".landing-info h3, .landing-intro h2, .landing-intro h1",
     "chars"
@@ -72,36 +71,54 @@ export function initialFX() {
     }
   );
 
-  // =========================
-  // SECOND TEXT BLOCK
-  // =========================
-  const landingText2 = splitText(".landing-h2-info", "chars");
+  if (mobile) {
+    gsap.fromTo(
+      ".landing-role-mobile",
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: "power2.out",
+        delay: 0.6,
+      }
+    );
+  } else {
+    const landingText2 = splitText(".landing-h2-info", "chars");
 
-  gsap.fromTo(
-    landingText2,
-    { opacity: 0, y: 80, filter: "blur(5px)" },
-    {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      duration: 1.2,
-      ease: "power3.inOut",
-      stagger: 0.025,
-      delay: 0.3,
-    }
-  );
+    gsap.fromTo(
+      landingText2,
+      { opacity: 0, y: 80, filter: "blur(5px)" },
+      {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1.2,
+        ease: "power3.inOut",
+        stagger: 0.025,
+        delay: 0.3,
+      }
+    );
 
-  gsap.fromTo(
-    ".landing-info-h2",
-    { opacity: 0, y: 30 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 1.2,
-      ease: "power1.inOut",
-      delay: 0.8,
-    }
-  );
+    gsap.fromTo(
+      ".landing-info-h2",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: "power1.inOut",
+        delay: 0.8,
+      }
+    );
+
+    const landingText3 = splitText(".landing-h2-info-1", "chars");
+    const landingText4 = splitText(".landing-h2-1", "chars");
+    const landingText5 = splitText(".landing-h2-2", "chars");
+
+    LoopText(landingText2, landingText3);
+    LoopText(landingText4, landingText5);
+  }
 
   gsap.fromTo(
     [".header", ".icons-section", ".nav-fade"],
@@ -113,16 +130,6 @@ export function initialFX() {
       delay: 0.1,
     }
   );
-
-  // =========================
-  // LOOP TEXTS
-  // =========================
-  const landingText3 = splitText(".landing-h2-info-1", "chars");
-  const landingText4 = splitText(".landing-h2-1", "chars");
-  const landingText5 = splitText(".landing-h2-2", "chars");
-
-  LoopText(landingText2, landingText3);
-  LoopText(landingText4, landingText5);
 }
 
 /**

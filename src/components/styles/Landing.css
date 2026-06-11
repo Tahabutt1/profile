@@ -244,6 +244,12 @@ h2.landing-info-h2 {
   top: 0;
   left: 0;
 }
+.landing-role-mobile {
+  display: none;
+}
+.landing-role-desktop {
+  display: block;
+}
 @media screen and (min-width: 500px) {
   .landing-circle2 {
     display: block;
@@ -357,16 +363,58 @@ h2.landing-info-h2 {
   }
 }
 @media screen and (max-width: 1024px) {
+  .landing-section {
+    overflow: hidden;
+  }
   .landing-intro {
-    top: 8%;
+    top: 11%;
+    left: 0;
+    right: auto;
+    transform: none;
+  }
+  .landing-role-desktop {
+    display: none;
+  }
+  .landing-role-mobile {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    margin-top: -8px;
+    margin-left: 8px;
+    font-family: "Geist", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #eae5ec;
+    gap: 2px;
+  }
+  .landing-role-mobile span:last-child {
+    color: #b23a48;
+  }
+  .landing-info {
+    bottom: auto;
+    top: 34%;
+    left: auto;
+    right: 0;
+    transform: none;
+    text-align: left;
+    z-index: 12;
+    max-width: 42%;
+    pointer-events: none;
+  }
+  .landing-info h3 {
+    font-size: 14px;
+    margin-bottom: 2px;
   }
   .character-model {
     position: fixed;
-    top: 21%;
-    bottom: auto;
-    height: 52vh;
-    max-height: 460px;
-    z-index: 11;
+    top: auto;
+    bottom: 8%;
+    height: 50vh;
+    max-height: 400px;
+    z-index: 10;
     width: 100%;
     left: 50%;
     pointer-events: inherit;
@@ -387,15 +435,23 @@ h2.landing-info-h2 {
 }
 @media screen and (max-width: 767px) {
   .landing-intro {
-    top: 7%;
+    top: 10%;
   }
   .landing-info {
-    bottom: 28px;
+    top: 33%;
+    max-width: 44%;
+  }
+  .landing-role-mobile {
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .landing-info h3 {
+    font-size: 12px;
   }
   .character-model {
-    top: 19%;
-    height: 48vh;
-    max-height: 400px;
+    bottom: 10%;
+    height: 44vh;
+    max-height: 340px;
   }
   .character-hover {
     width: 160px;
@@ -408,14 +464,6 @@ h2.landing-info-h2 {
   .landing-intro h1 {
     font-size: 26px;
     line-height: 26px;
-  }
-  .landing-info h2 {
-    font-size: 26px;
-    line-height: 30px;
-  }
-  h2.landing-info-h2 {
-    font-size: 30px;
-    width: 100%;
   }
   .landing-circle1 {
     width: 200px;
@@ -434,19 +482,20 @@ h2.landing-info-h2 {
     font-size: 22px;
     line-height: 22px;
   }
-  .landing-info h3 {
+  .landing-info {
+    top: 32%;
+    max-width: 46%;
+  }
+  .landing-role-mobile {
     font-size: 16px;
+    margin-left: 6px;
   }
-  .landing-info h2 {
-    font-size: 22px;
-    line-height: 26px;
-  }
-  h2.landing-info-h2 {
-    font-size: 26px;
+  .landing-info h3 {
+    font-size: 11px;
   }
   .character-model {
-    top: 17%;
-    height: 44vh;
-    max-height: 340px;
+    bottom: 12%;
+    height: 40vh;
+    max-height: 300px;
   }
 }
