@@ -250,6 +250,10 @@ h2.landing-info-h2 {
 .landing-role-desktop {
   display: block;
 }
+.landing-avatar-spacer,
+.landing-role-below-avatar {
+  display: none;
+}
 @media screen and (min-width: 500px) {
   .landing-circle2 {
     display: block;
@@ -364,29 +368,27 @@ h2.landing-info-h2 {
 }
 @media screen and (max-width: 1024px) {
   .landing-section {
-    display: flex;
-    flex-direction: column;
-    height: auto;
+    height: var(--vh);
     min-height: 100svh;
-    overflow: hidden;
-    padding-bottom: 0;
+    display: block;
+    overflow: visible;
   }
   .landing-container {
     position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 8px;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     height: auto;
-    padding-top: 76px;
+    padding-top: 68px;
     z-index: 12;
+    pointer-events: none;
   }
   .landing-intro {
     position: relative;
     top: auto;
     left: auto;
-    grid-column: 1;
     transform: none;
+    pointer-events: auto;
   }
   .landing-intro h1 {
     white-space: normal;
@@ -394,106 +396,96 @@ h2.landing-info-h2 {
   .landing-intro h1 span {
     display: inline;
   }
-  .landing-role-desktop {
+  .landing-info {
     display: none;
   }
-  .landing-info {
-    position: relative;
-    top: auto;
-    right: auto;
-    left: auto;
-    bottom: auto;
-    transform: none;
-    grid-column: 2;
-    text-align: left;
-    z-index: 12;
-    max-width: 100%;
+  .landing-avatar-spacer {
+    display: block;
     width: 100%;
-    pointer-events: none;
-    align-self: center;
-    padding-top: 6px;
-  }
-  .landing-role-mobile {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    margin-top: -6px;
-    margin-left: 12px;
-    font-family: "Geist", sans-serif;
-    font-weight: 600;
-    font-size: clamp(14px, 3.8vw, 20px);
-    line-height: 1.08;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #eae5ec;
-    gap: 1px;
-    white-space: nowrap;
-  }
-  .landing-role-mobile span:last-child {
-    color: #b23a48;
-  }
-  .landing-info h3 {
-    font-size: clamp(12px, 3.2vw, 16px);
-    margin: 0 0 2px 12px;
-  }
-  .landing-section .character-container {
-    position: relative;
-    width: 100%;
-    height: clamp(260px, 38vh, 360px);
+    height: clamp(210px, 38vh, 290px);
     margin-top: 4px;
     flex-shrink: 0;
-    z-index: 10;
+    pointer-events: none;
   }
-  .landing-section .character-model {
-    position: absolute !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 50% !important;
-    height: 100% !important;
-    max-height: none !important;
+  .landing-role-below-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 2px;
+    pointer-events: auto;
+    font-family: "Geist", sans-serif;
+    font-weight: 600;
+    font-size: clamp(16px, 4.5vw, 22px);
+    line-height: 1.12;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #eae5ec;
+    gap: 2px;
+  }
+  .landing-role-below-avatar span:last-child {
+    color: #b23a48;
+  }
+  .character-container {
+    position: fixed;
+    inset: 0;
     width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 11;
+  }
+  .character-model {
+    position: fixed !important;
+    height: clamp(220px, 40vh, 320px) !important;
+    max-height: 320px !important;
+    width: 100%;
+    bottom: auto !important;
+    top: clamp(118px, 19vh, 148px) !important;
+    left: 50% !important;
     transform: translateX(-50%) !important;
-    z-index: 10;
+    z-index: 11;
+    pointer-events: inherit;
   }
   .character-model::after,
   .character-model::before {
     display: none;
   }
   .character-hover {
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
   }
   .character-rim {
-    width: 220px;
-    height: 220px;
+    width: 210px;
+    height: 210px;
   }
 }
 @media screen and (max-width: 767px) {
   .landing-container {
-    padding-top: 70px;
-    column-gap: 4px;
-  }
-  .landing-role-mobile {
-    margin-left: 8px;
-    font-size: clamp(13px, 3.6vw, 17px);
-  }
-  .landing-info h3 {
-    margin-left: 8px;
-  }
-  .landing-section .character-container {
-    height: clamp(240px, 36vh, 320px);
+    padding-top: 64px;
   }
   .landing-intro h1 {
     font-size: 24px;
     line-height: 26px;
   }
+  .landing-avatar-spacer {
+    height: clamp(200px, 36vh, 260px);
+    margin-top: 2px;
+  }
+  .landing-role-below-avatar {
+    font-size: clamp(15px, 4.2vw, 20px);
+  }
+  .character-model {
+    height: clamp(200px, 38vh, 280px) !important;
+    max-height: 280px !important;
+    top: clamp(112px, 18vh, 138px) !important;
+  }
   .character-hover {
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
   }
   .character-rim {
-    width: 190px;
-    height: 190px;
+    width: 185px;
+    height: 185px;
   }
   .landing-circle1 {
     width: 200px;
@@ -512,15 +504,15 @@ h2.landing-info-h2 {
     font-size: 20px;
     line-height: 22px;
   }
-  .landing-role-mobile {
-    font-size: 13px;
-    margin-left: 6px;
+  .landing-avatar-spacer {
+    height: clamp(185px, 34vh, 230px);
   }
-  .landing-info h3 {
-    font-size: 11px;
-    margin-left: 6px;
+  .landing-role-below-avatar {
+    font-size: 14px;
   }
-  .landing-section .character-container {
-    height: clamp(220px, 34vh, 280px);
+  .character-model {
+    height: clamp(185px, 36vh, 240px) !important;
+    max-height: 240px !important;
+    top: clamp(104px, 17vh, 128px) !important;
   }
 }

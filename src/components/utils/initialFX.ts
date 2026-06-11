@@ -86,7 +86,7 @@ export function initialFX() {
     );
 
     gsap.fromTo(
-      ".landing-role-mobile",
+      ".landing-role-below-avatar",
       { opacity: 0, y: 20 },
       {
         opacity: 1,
