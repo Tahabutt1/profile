@@ -52,10 +52,11 @@ export function initialFX() {
     delay: 1,
   });
 
-  const landingText = splitText(
-    ".landing-info h3, .landing-intro h2, .landing-intro h1",
-    "chars"
-  );
+  const landingSelectors = mobile
+    ? ".landing-info h3, .landing-intro h2"
+    : ".landing-info h3, .landing-intro h2, .landing-intro h1";
+
+  const landingText = splitText(landingSelectors, "chars");
 
   gsap.fromTo(
     landingText,
@@ -73,14 +74,26 @@ export function initialFX() {
 
   if (mobile) {
     gsap.fromTo(
-      ".landing-role-mobile",
-      { opacity: 0, y: 24 },
+      ".landing-intro h1",
+      { opacity: 0, y: 20 },
       {
         opacity: 1,
         y: 0,
-        duration: 0.9,
+        duration: 0.8,
         ease: "power2.out",
-        delay: 0.6,
+        delay: 0.35,
+      }
+    );
+
+    gsap.fromTo(
+      ".landing-role-mobile",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        delay: 0.55,
       }
     );
   } else {

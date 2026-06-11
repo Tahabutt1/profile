@@ -141,7 +141,7 @@ body {
   }
   .character-model {
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.35s ease;
   }
   .character-model.character-loaded {
     opacity: 1;
