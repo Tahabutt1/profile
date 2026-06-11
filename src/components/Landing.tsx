@@ -1,6 +1,7 @@
+import { PropsWithChildren } from "react";
 import "./styles/Landing.css";
 
-const Landing = () => {
+const Landing = ({ children }: PropsWithChildren) => {
   return (
     <>
       <div className="landing-section" id="landingDiv">
@@ -26,7 +27,7 @@ const Landing = () => {
               </h2>
             </div>
           </div>
-          <div className="landing-avatar-spacer" aria-hidden="true" />
+          <div className="landing-avatar-slot">{children}</div>
           <div className="landing-role-below-avatar">
             <span>Software</span>
             <span>Developer</span>
