@@ -98,23 +98,28 @@
   .header {
     padding: 14px 0;
     margin-bottom: -70px;
+    align-items: center;
   }
   .navbar-logo {
     width: 110px;
     height: auto;
   }
   .header ul {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
     font-size: 11px;
-    row-gap: 5px;
-    column-gap: 24px;
+    row-gap: 0;
+    column-gap: 18px;
   }
 }
 @media only screen and (max-width: 480px) {
   .navbar-logo {
-    width: 85px;
+    width: 72px;
   }
   .header ul {
-    font-size: 10px;
-    column-gap: 16px;
+    font-size: 9px;
+    column-gap: 10px;
+    letter-spacing: 0.5px;
   }
 }

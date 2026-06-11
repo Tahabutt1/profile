@@ -357,15 +357,20 @@ h2.landing-info-h2 {
   }
 }
 @media screen and (max-width: 1024px) {
+  .landing-intro {
+    top: 8%;
+  }
   .character-model {
     position: fixed;
-    height: 58vh;
-    max-height: 520px;
-    bottom: 0;
+    top: 21%;
+    bottom: auto;
+    height: 52vh;
+    max-height: 460px;
     z-index: 11;
     width: 100%;
     left: 50%;
     pointer-events: inherit;
+    transform: translateX(-50%);
   }
   .character-model::after,
   .character-model::before {
@@ -382,14 +387,15 @@ h2.landing-info-h2 {
 }
 @media screen and (max-width: 767px) {
   .landing-intro {
-    top: 10%;
+    top: 7%;
   }
   .landing-info {
     bottom: 28px;
   }
   .character-model {
-    height: 50vh;
-    max-height: 420px;
+    top: 19%;
+    height: 48vh;
+    max-height: 400px;
   }
   .character-hover {
     width: 160px;
@@ -439,7 +445,8 @@ h2.landing-info-h2 {
     font-size: 26px;
   }
   .character-model {
-    height: 46vh;
-    max-height: 360px;
+    top: 17%;
+    height: 44vh;
+    max-height: 340px;
   }
 }
