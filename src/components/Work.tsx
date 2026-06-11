@@ -14,15 +14,15 @@ const Work = () => {
       description: "(Frontend project) please click below to check project!",
       image: "/images/pge-smart.png",
       link: "https://pgesmarttech.com/",
+      tools: "Javascript, TypeScript, React, Threejs",
     },
     {
       title: "Python Flask Backend APIs",
       description: "Testing on postman",
       image: "/images/postman.png",
       link: "",
+      tools: "Python, Flask, REST APIs, Postman",
     },
-
-    // ✅ AI/ML (image + video)
     {
       title: "AI/ML Model Training Projects",
       description:
@@ -30,22 +30,30 @@ const Work = () => {
       image: "/images/chatbott.png",
       video: "/images/chatbot.mp4",
       link: "",
+      tools: "Python, AI/ML, React, NLP",
     },
-
+    {
+      title: "Consultant AI",
+      description:
+        "AI consultant project with intelligent guidance, smart recommendations, and real-time assistance. please click below on display to check project!",
+      video: "/images/consultant.mp4",
+      link: "",
+      tools: "Python, AI/ML, React, OpenAI API",
+    },
     {
       title: "Full Stack Portfolio Projects",
       description: "Frontend project, click the image to view project!",
       image: "/images/pang.png",
       link: "https://pangeapay1.vercel.app/",
+      tools: "Javascript, TypeScript, React, Threejs",
     },
     {
       title: "Cybersecurity Learning Projects",
       description: "metasploit attack",
       image: "/images/meta.jpg",
       link: "",
+      tools: "Kali Linux, Metasploit, Security Testing",
     },
-
-    // ✅ Anti-Gravity (image + video)
     {
       title: "Anti-Gravity VR Glow Effect",
       description:
@@ -53,6 +61,7 @@ const Work = () => {
       image: "/images/ar-project.png",
       video: "/images/ar-projects.mp4",
       link: "",
+      tools: "Javascript, TypeScript, React, Threejs",
     },
   ];
 
@@ -135,7 +144,7 @@ const Work = () => {
                   </div>
 
                   <h4>Tools and features</h4>
-                  <p>Javascript, TypeScript, React, Threejs</p>
+                  <p>{project.tools}</p>
                 </div>
 
                 <a
@@ -148,7 +157,12 @@ const Work = () => {
                     display: "block",
                   }}
                 >
-                  <WorkImage image={project.image} alt={project.title} />
+                  <WorkImage
+                    image={project.image}
+                    alt={project.title}
+                    video={project.video}
+                    link={project.link}
+                  />
                 </a>
               </div>
             ))}
