@@ -251,7 +251,6 @@ h2.landing-info-h2 {
   display: block;
 }
 .landing-avatar-spacer,
-.landing-avatar-slot,
 .landing-role-below-avatar {
   display: none;
 }
@@ -391,7 +390,7 @@ h2.landing-info-h2 {
     left: auto;
     transform: none;
     pointer-events: auto;
-    z-index: 2;
+    z-index: 12;
     margin-bottom: 6px;
   }
   .landing-intro h1 {
@@ -403,34 +402,13 @@ h2.landing-info-h2 {
   .landing-info {
     display: none;
   }
-  .landing-avatar-slot {
+  .landing-avatar-spacer {
     display: block;
-    position: relative;
     width: 100%;
-    height: clamp(280px, 48vh, 400px);
+    height: clamp(240px, 42vh, 360px);
     margin-top: 0;
     flex-shrink: 0;
     pointer-events: none;
-    z-index: 1;
-  }
-  .landing-avatar-slot .character-container {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .landing-avatar-slot .character-model {
-    position: absolute !important;
-    top: 0 !important;
-    left: 50% !important;
-    bottom: auto !important;
-    width: 100% !important;
-    height: 100% !important;
-    max-height: none !important;
-    transform: translateX(-50%) !important;
-    z-index: 1;
-    pointer-events: inherit;
   }
   .landing-role-below-avatar {
     display: flex;
@@ -441,7 +419,7 @@ h2.landing-info-h2 {
     margin-bottom: 0;
     pointer-events: auto;
     position: relative;
-    z-index: 2;
+    z-index: 12;
     font-family: "Geist", sans-serif;
     font-weight: 600;
     font-size: clamp(16px, 4.5vw, 22px);
@@ -454,17 +432,37 @@ h2.landing-info-h2 {
   .landing-role-below-avatar span:last-child {
     color: #b23a48;
   }
+  .character-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 11;
+  }
+  .character-model {
+    position: fixed !important;
+    height: clamp(240px, 42vh, 360px) !important;
+    max-height: 360px !important;
+    width: 100%;
+    bottom: auto !important;
+    top: clamp(128px, 21vh, 150px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 11;
+    pointer-events: inherit;
+  }
   .character-model::after,
   .character-model::before {
     display: none;
   }
-  .landing-avatar-slot .character-hover {
-    width: 200px;
-    height: 200px;
+  .character-hover {
+    width: 180px;
+    height: 180px;
   }
-  .landing-avatar-slot .character-rim {
-    width: 280px;
-    height: 280px;
+  .character-rim {
+    width: 240px;
+    height: 240px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -475,20 +473,25 @@ h2.landing-info-h2 {
     font-size: 24px;
     line-height: 26px;
   }
-  .landing-avatar-slot {
-    height: clamp(260px, 46vh, 360px);
+  .landing-avatar-spacer {
+    height: clamp(220px, 40vh, 320px);
   }
   .landing-role-below-avatar {
     font-size: clamp(15px, 4.2vw, 20px);
     margin-top: 14px;
   }
-  .landing-avatar-slot .character-hover {
-    width: 180px;
-    height: 180px;
+  .character-model {
+    height: clamp(220px, 40vh, 320px) !important;
+    max-height: 320px !important;
+    top: clamp(120px, 20vh, 142px) !important;
   }
-  .landing-avatar-slot .character-rim {
-    width: 250px;
-    height: 250px;
+  .character-hover {
+    width: 160px;
+    height: 160px;
+  }
+  .character-rim {
+    width: 210px;
+    height: 210px;
   }
   .landing-circle1 {
     width: 200px;
@@ -507,19 +510,24 @@ h2.landing-info-h2 {
     font-size: 20px;
     line-height: 22px;
   }
-  .landing-avatar-slot {
-    height: clamp(240px, 44vh, 320px);
+  .landing-avatar-spacer {
+    height: clamp(200px, 38vh, 280px);
   }
   .landing-role-below-avatar {
     font-size: 14px;
     margin-top: 12px;
   }
-  .landing-avatar-slot .character-hover {
-    width: 160px;
-    height: 160px;
+  .character-model {
+    height: clamp(200px, 38vh, 280px) !important;
+    max-height: 280px !important;
+    top: clamp(112px, 19vh, 132px) !important;
   }
-  .landing-avatar-slot .character-rim {
-    width: 220px;
-    height: 220px;
+  .character-hover {
+    width: 140px;
+    height: 140px;
+  }
+  .character-rim {
+    width: 190px;
+    height: 190px;
   }
 }
